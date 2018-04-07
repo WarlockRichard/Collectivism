@@ -22,7 +22,7 @@ object AdditionInspector extends Inspector {
         disposition: Map[Object, Option[Subject]],
         subjects: Set[Subject]
       ): Option[(Subject, Object, Subject)] = {
-    val stakeholders = disposition.foldLeft(Map[Subject, Set[Object]]()){
+    val stakeholderObjects = disposition.foldLeft(Map[Subject, Set[Object]]()){
         case (propertyMap, (anObject, Some(aSubject))) =>
           if(aSubject.lowPriority == donee.lowPriority){
             propertyMap + (aSubject -> (propertyMap.getOrElse(aSubject, Set.empty[Object]) + anObject))
@@ -32,10 +32,10 @@ object AdditionInspector extends Inspector {
         case (propertyMap, (_, None)) => propertyMap
     }
 
+    val stakeholders = stakeholderObjects.filter{ case (aSubject, anObjects) => anObjects.intersect(donee.objects).nonEmpty }
     if ((stakeholders - donee).isEmpty) {
       return None
     }
-
     val (topDonor, topDonorPower) = stakeholders.maxBy { _._2.size }
 
     if (topDonor != donee

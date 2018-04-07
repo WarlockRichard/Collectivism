@@ -3,7 +3,6 @@ package bwsw.testcase
 import org.scalatest.FunSpec
 
 class integrationTest extends FunSpec{
-  describe("An integration test") {
     val objects = Set(
       Object("0"),
       Object("1"),
@@ -39,12 +38,10 @@ class integrationTest extends FunSpec{
       val distribution2 = OwnershipDistributor.addSubject(subjectS2, distribution1)
       val distribution3 = OwnershipDistributor.addSubject(subjectS3, distribution2)
 
-      val distribution4 = OwnershipDistributor.removeSubject(subjectS3, distribution3)
+      val distribution4 = OwnershipDistributor.removeSubject(subjectS2, distribution3)
 
       val distribution5 = OwnershipDistributor.addSubject(subjectS4, distribution4)
+        distribution5
       }
-    }
-//    it("can remove subject"){
-//    }
   }
 }
