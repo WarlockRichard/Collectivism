@@ -98,10 +98,10 @@ object RemovalInspector extends Inspector{
           propertyMap
       case (propertyMap, (_, None)) => propertyMap
     }
-    val contenders = subjects.filter { subject => subject.objects.intersect(objectsToDonate).nonEmpty && subject.lowPriority == donor.lowPriority }
+    val contenders = subjects.filter { subject => subject.objects.intersect(objectsToDonate).nonEmpty && subject.lowPriority == donor.lowPriority  && subject != donor}
     if (contenders.nonEmpty) {
       val donee = contenders.minBy( contenderObjects.getOrElse(_, Set.empty[Object]).size )
-      val donation = donee.objects.intersect(donor.objects).head
+      val donation = donee.objects.intersect(objectsToDonate).head
       Some((donee, donation, donee))
     }
     else
@@ -129,15 +129,15 @@ object RemovalInspector extends Inspector{
 
     val contenderObjects = disposition.foldLeft(Map[Subject, Set[Object]]()){
       case (propertyMap, (anObject, Some(aSubject))) =>
-        if(aSubject.lowPriority)
+        if(aSubject.lowPriority > donor.lowPriority)
           propertyMap + (aSubject -> (propertyMap.getOrElse(aSubject, Set.empty[Object]) + anObject))
         else propertyMap
       case (propertyMap, (_, None)) => propertyMap
     }
-    val contenders = subjects.filter{ subject => subject.objects.intersect(objectsToDonate).nonEmpty }
+    val contenders = subjects.filter{ subject => subject.objects.intersect(objectsToDonate).nonEmpty && subject.lowPriority > donor.lowPriority && subject != donor}
     if (contenders.nonEmpty) {
       val donee = contenders.minBy( contenderObjects.getOrElse(_, Set.empty[Object]).size )
-      val donation = donee.objects.intersect(donor.objects).head
+      val donation = donee.objects.intersect(objectsToDonate).head
       Some((donee, donation, donee))
     }
     else
