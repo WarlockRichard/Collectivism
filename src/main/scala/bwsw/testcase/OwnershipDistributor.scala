@@ -34,7 +34,7 @@ object OwnershipDistributor {
 
     //appoint free objects
     val emptinessBasedDisposition = distribution.disposition.map {
-        case (anObject, None) => if (that.objects.contains(anObject)) (anObject, Some(that)) else (anObject, Option.empty[Subject])
+        case (anObject, None) => if (that.objects.contains(anObject)) (anObject, Some(that)) else (anObject, None)
         case (anObject, Some(subject)) => (anObject, Some(subject))
     }
 
@@ -111,9 +111,9 @@ object OwnershipDistributor {
       (implicit inspector: Inspector,  subjects: Set[Subject]): Map[Object, Option[Subject]] = {
     val donationMaybe = searchMethod(subject, disposition, subjects)
     donationMaybe match {
-      case Some((donee, donation, subjectToBeVerified)) =>
+      case Some((donee, donation, subjectToVerify)) =>
         val newDisposition = disposition + (donation -> Some(donee))
-        shiftN(subject, shift1(subjectToBeVerified, newDisposition))(searchMethod)
+        shiftN(subject, shift1(subjectToVerify, newDisposition))(searchMethod)
       case None =>
         disposition
     }
@@ -137,9 +137,9 @@ object OwnershipDistributor {
      (implicit inspector: Inspector,  subjects: Set[Subject]): Map[Object, Option[Subject]] = {
     val donationMaybe = inspector.searchDonationByBalance(subject, disposition, subjects)
     donationMaybe match {
-      case Some((donee, donation, subjectToBeVerified)) =>
+      case Some((donee, donation, subjectToVerify)) =>
         val newDisposition = disposition + (donation -> Some(donee))
-        shift1(subjectToBeVerified, newDisposition)
+        shift1(subjectToVerify, newDisposition)
       case None =>
         disposition
     }
