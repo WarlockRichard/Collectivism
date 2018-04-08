@@ -15,12 +15,12 @@ class integrationTest extends FunSpec{
       Object("8"),
       Object("9"))
 
-    val baseDistribution = OwnershipDistributor.createDistribution(objects)
+    val baseDistribution: Distribution = OwnershipDistributor.createDistribution(objects)
 
-    val subjectS1 = Subject("S1", false, Set(Object("2"), Object("3")))
-    val subjectS2 = Subject("S2", false, Set(Object("2"), Object("4"), Object("5")))
-    val subjectS3 = Subject("S3", false, Set(Object("2")))
-    val subjectS4 = Subject("S4", true, Set(Object("2"), Object("3")))
+    val subjectS1 = Subject("S1", lowPriority = false, Set(Object("2"), Object("3")))
+    val subjectS2 = Subject("S2", lowPriority = false, Set(Object("2"), Object("4"), Object("5")))
+    val subjectS3 = Subject("S3", lowPriority = false, Set(Object("2")))
+    val subjectS4 = Subject("S4", lowPriority = true, Set(Object("2"), Object("3")))
 
     it("can pass an integration test"){
       assertResult(Distribution(objects, Set(subjectS1, subjectS3, subjectS4), Map(
@@ -34,13 +34,13 @@ class integrationTest extends FunSpec{
         Object("7") -> None,
         Object("8") -> None,
         Object("9") -> None))){
-      val distribution1 = OwnershipDistributor.addSubject(subjectS1, baseDistribution)
-      val distribution2 = OwnershipDistributor.addSubject(subjectS2, distribution1)
-      val distribution3 = OwnershipDistributor.addSubject(subjectS3, distribution2)
+        val distribution1 = OwnershipDistributor.addSubject(subjectS1, baseDistribution)
+        val distribution2 = OwnershipDistributor.addSubject(subjectS2, distribution1)
+        val distribution3 = OwnershipDistributor.addSubject(subjectS3, distribution2)
 
-      val distribution4 = OwnershipDistributor.removeSubject(subjectS2, distribution3)
+        val distribution4 = OwnershipDistributor.removeSubject(subjectS2, distribution3)
 
-      val distribution5 = OwnershipDistributor.addSubject(subjectS4, distribution4)
+        val distribution5 = OwnershipDistributor.addSubject(subjectS4, distribution4)
         distribution5
       }
   }

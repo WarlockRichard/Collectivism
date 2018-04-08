@@ -122,7 +122,7 @@ object OwnershipDistributor {
   /** Redistributes an objects in previously fairly distributed subset
     *
     * Method can be called after the redistribution of a single object inside shiftN method
-    * This method asserts that balance of that subject's connected component
+    * This method relies that balance of that subject's connected component
     * (excluding the subject given in shiftN method) could have been violated only by 1
     * @param subject a subject balance of which could have been changed
     * @param disposition a map that represents owners of an objects
