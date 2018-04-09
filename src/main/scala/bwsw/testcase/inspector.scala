@@ -63,11 +63,15 @@ object AdditionInspector extends Inspector {
         disposition: Map[Object, Option[Subject]],
         subjects: Set[Subject]
       ): Option[(Subject, Object, Subject)] = {
-    disposition
+    val steakholderMaybe = disposition
       .find {
         case (k, Some(v)) => donee.objects.contains(k) && (v.lowPriority > donee.lowPriority)
         case (k, None) => false
-      }.map { case (donation, Some(donor)) => (donee, donation, donor) }
+      }
+    steakholderMaybe match {
+      case Some((donation, Some(donor))) => Some((donee, donation, donor))
+      case _ => None
+    }
   }
 }
 

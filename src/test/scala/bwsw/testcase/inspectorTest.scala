@@ -47,7 +47,7 @@ class inspectorTest extends FunSpec {
         AdditionInspector.searchDonationByBalance(subject1, Map(), Set())
       }
     }
-    it("searchDonationByBalance returns None if subject LOWPRIO and all object are held by subjects with a normal priority") {
+    it("searchDonationByBalance returns None if subject LOWPRIO and all objects are held by subjects with a normal priority") {
       assertResult(None) {
         AdditionInspector.searchDonationByBalance(subject3,
           Map(

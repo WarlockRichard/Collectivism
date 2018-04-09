@@ -34,8 +34,8 @@ object OwnershipDistributor {
 
     //appoint free objects
     val emptinessBasedDisposition = distribution.disposition.map {
-        case (anObject, None) => if (that.objects.contains(anObject)) (anObject, Some(that)) else (anObject, None)
-        case (anObject, Some(subject)) => (anObject, Some(subject))
+      case (anObject, None) => if (that.objects.contains(anObject)) (anObject, Some(that)) else (anObject, None)
+      case (anObject, Some(aSubject)) => (anObject, Some(aSubject))
     }
 
     //redistribution from subjects of low priority
@@ -92,13 +92,15 @@ object OwnershipDistributor {
     )
   }
 
-  /** Recursively redistributes an objects maintaining distributive justice
-    * to or from the subject depending on given inspector
+  /** Recursively redistributes an objects to or from the subject
+    * maintaining single rule of distributive justice depending on
+    * given inspector and search method
     *
     * In a single call redistributes a single object
+    *
     * @param subject a subject for which donation is intended
     * @param disposition a map that represents owners of an objects
-    * @param searchMethod method using to find an object to redistribute in favor of the subject
+    * @param searchMethod method using to find an object to redistribute
     * @param inspector provides a methods of object searching
     * @return distribution with a single object redistributed
     *         or distribution obtained as parameter if distribution is fair
@@ -121,7 +123,7 @@ object OwnershipDistributor {
 
   /** Redistributes an objects in previously fairly distributed subset
     *
-    * Method can be called after the redistribution of a single object inside shiftN method
+    * Method can be called after a redistribution of a single object inside shiftN method
     * This method relies that balance of that subject's connected component
     * (excluding the subject given in shiftN method) could have been violated only by 1
     * @param subject a subject balance of which could have been changed
